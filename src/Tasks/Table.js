@@ -1,59 +1,52 @@
 import React, { Component } from 'react';
-import TaskRow from './Row';
 const uuidv4 = require('uuid/v4');
-class TaskTable extends Component {
+import TaskEntry from './Entry';
+import Utils from '../Utils';
+class TaskPanel extends Component {
   constructor(props) {
     super(props)
     let x = this.state = {
-      task_ids: [],
+      jkey: props.jkey,
+      task_ids: {},
       ikey: "tasks"
-    }, data = localStorage.getItem(x.ikey);
-    if (data)
-      this.state = JSON.parse(data);
-    this.removeRow =
-      this.removeRow.bind(this)
-    this.addNew =
-      this.addNew.bind(this)
+    }; Utils.load_obj(x);
   }
-  removeRow(event) {
+  toRemove = (event) => {
     let evt = event.target
-    let arr = this.state.task_ids
+    let x = this.state, tasks = x.task_ids
+    tasks[x.jkey].splice(tasks[x.jkey].indexOf(evt.name), 1)
+    localStorage.setItem(x.ikey, JSON.stringify(x))
+    this.setState({task_ids: tasks})
     localStorage.removeItem(evt.name)
-    arr.splice(arr.indexOf(evt.name), 1)
-    localStorage.setItem(this.state.ikey,
-      JSON.stringify(this.state))
-    this.setState({task_ids: arr})
   }
-  addNew(event) {
-    this.state.task_ids.push(uuidv4())
-    localStorage.setItem(this.state.ikey,
-      JSON.stringify(this.state))
-    this.setState({task_ids:
-      this.state.task_ids
-    })
+  toAddNew = (event) => {
+    let x = this.state, tasks = x.task_ids
+    tasks[x.jkey].push(uuidv4())
+    localStorage.setItem(x.ikey, JSON.stringify(x))
+    this.setState({task_ids: tasks})
   }
   render() {
       let x = this.state
       return (
-        <table class="table">
+        <table className = "table">
           <thead>
             <tr>
-              <th scope="col">Status</th>
+              <th scope="col">Last Action</th>
               <th scope="col">Task Name</th>
               <th scope="col">Intervals</th>
               <th scope="col">
-                <button type = "button" class = "btn btn-primary"
-                  onClick = {this.addNew}>New Entry</button>
+                <button type = "button" className = "btn btn-primary"
+                  onClick = {this.toAddNew}>New Entry</button>
               </th>
             </tr>
           </thead>
           <tbody>
-            {x.task_ids.map((value, idx) => {
-              return <TaskRow title = {value} ikey = {value}
-                removeRow = {this.removeRow}/>
+            {x.task_ids[x.jkey].map(value => {
+              return <TaskEntry title = {value} ikey = {value}
+                key = {value} toRemove = {this.toRemove}/>
             })}
           </tbody>
         </table>
       )
    }
-}; export default TaskTable;
+}; export default TaskPanel;
