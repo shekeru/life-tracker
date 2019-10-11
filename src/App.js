@@ -1,33 +1,36 @@
 import React, { Component } from 'react';
 import TaskPanel from './Tasks/Table';
 import ReactDOM from 'react-dom';
+const uuidv4 = require('uuid/v4');
 import Utils from './Utils';
 class Application extends Component {
   constructor(props) {
     super(props)
     let x = this.state = {
-      task_key: "t1"
-    };
+      ikey: "root",
+      tables: ["t1"],
+      t_index: 0
+    }
   }
   onFieldUpdate = (event) => {
     let x = this.state, evt = event.target
     this.setState({[evt.name]: x[evt.name] = evt.value})
-    console.log(evt)
+  }
+  newTaskTable = (event) => {
+    let x = this.state; x.tables.push(uuidv4())
+    localStorage.setItem(x.ikey, JSON.stringify(x))
+    this.setState({tables: x.tables})
   }
   render() {
     let x = this.state
     return (
        <main>
           <button type = "button" className = "btn btn-primary"
-            onClick = {this.onFieldUpdate} name = "task_key"
-              value = "t1" >Survival</button>
-          <button type = "button" className = "btn btn-primary"
-            onClick = {this.onFieldUpdate} name = "task_key"
-              value = "t2" >Grooming</button>
-          <button type = "button" className = "btn btn-primary"
-            onClick = {this.onFieldUpdate} name = "task_key"
-              value = "t3" >Enrichment</button>
-          <TaskPanel jkey = {x.task_key}/>
+            onClick = {this.onFieldUpdate} name = "t_index"
+              value = "t1" >{x.tables.name}</button>
+          <button type = "button" className = "btn btn-light"
+            onClick = {this.newTaskTable}>+</button>
+          <TaskPanel ikey = {x.tables[x.t_index]}/>
        </main>
     )
   }

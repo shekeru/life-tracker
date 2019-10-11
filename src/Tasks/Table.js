@@ -6,24 +6,23 @@ class TaskPanel extends Component {
   constructor(props) {
     super(props)
     let x = this.state = {
-      jkey: props.jkey,
-      task_ids: {},
-      ikey: "tasks"
+      ikey: props.ikey,
+      name: 'default',
+      task_ids: []
     }; Utils.load_obj(x);
   }
   toRemove = (event) => {
     let evt = event.target
     let x = this.state, tasks = x.task_ids
-    tasks[x.jkey].splice(tasks[x.jkey].indexOf(evt.name), 1)
+    tasks.splice(tasks.indexOf(evt.name), 1)
     localStorage.setItem(x.ikey, JSON.stringify(x))
-    this.setState({task_ids: tasks})
+      this.setState({task_ids: tasks})
     localStorage.removeItem(evt.name)
   }
   toAddNew = (event) => {
-    let x = this.state, tasks = x.task_ids
-    tasks[x.jkey].push(uuidv4())
+    let x = this.state; x.task_ids.push(uuidv4())
     localStorage.setItem(x.ikey, JSON.stringify(x))
-    this.setState({task_ids: tasks})
+    this.setState({task_ids: x.task_ids})
   }
   render() {
       let x = this.state
@@ -41,7 +40,7 @@ class TaskPanel extends Component {
             </tr>
           </thead>
           <tbody>
-            {x.task_ids[x.jkey].map(value => {
+            {x.task_ids.map(value => {
               return <TaskEntry title = {value} ikey = {value}
                 key = {value} toRemove = {this.toRemove}/>
             })}
