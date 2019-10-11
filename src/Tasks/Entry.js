@@ -12,9 +12,7 @@ class TaskEntry extends Component {
           timestamp: 0,
           interval: 0,
           units: ""
-    }, data = localStorage.getItem(x.ikey);
-    if (data)
-      this.state = JSON.parse(data)
+    }; Utils.load_obj(x)
   } // Function Defs
   onFieldUpdate = (event) => {
     let x = this.state, evt = event.target
@@ -33,11 +31,19 @@ class TaskEntry extends Component {
     console.log(x.bDelete, !x.bDelete);
   }
   render() {
-    let x = this.state
+    let x = this.state, y = this.props
     return (
       <tr>
         <td>
-          <TimeAgo date = {x.timestamp}/>
+          <TimeAgo date = {x.timestamp} className={(() => {
+            let diff = Date.now() - x.timestamp
+            let range = x.interval * x.units
+            if (diff > range * 0.95)
+              return "text-danger "
+                + "font-weight-bold"
+            if (diff > range * 0.75)
+              return "text-warning"
+          })()}/>
         </td>
         <td>
           <input type = "text" name = "title" value = {x.title}
@@ -57,7 +63,7 @@ class TaskEntry extends Component {
             name = "timestamp" onClick = {this.onUpdateTime} hidden={x.bDelete}
             onContextMenu={this.onFlipClick}>Refresh</button>
           <button type = "button" className = "btn btn-danger"
-            name = {x.ikey} onClick = {this.props.toRemove} hidden={!x.bDelete}
+            name = {x.ikey} onClick = {y.removeTask} hidden={!x.bDelete}
             onContextMenu={this.onFlipClick}>Delete</button>
         </td>
       </tr>

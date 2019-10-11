@@ -7,30 +7,58 @@ class Application extends Component {
   constructor(props) {
     super(props)
     let x = this.state = {
-      ikey: "root",
-      tables: ["t1"],
-      t_index: 0
-    }
+      ikey: "@app",
+      tables: [],
+      active: 0
+    }; Utils.load_obj(x)
+  }
+  // Table Management
+  newTaskTable = (event) => {
+    let x = this.state; x.tables.push({
+        name: "default",
+        ikey: uuidv4(),
+        ids: []
+    }); this.setState({tables: x.tables})
+    localStorage.setItem(x.ikey, JSON.stringify(x))
   }
   onFieldUpdate = (event) => {
     let x = this.state, evt = event.target
     this.setState({[evt.name]: x[evt.name] = evt.value})
   }
-  newTaskTable = (event) => {
-    let x = this.state; x.tables.push(uuidv4())
-    localStorage.setItem(x.ikey, JSON.stringify(x))
+  // Task Management
+  removeTask = (event) => {
+    let evt = event.target
+    let x = this.state, table = x.tables[x.active]
+    table.ids.splice(table.ids.indexOf(evt.name), 1)
+      this.setState({tables: x.tables})
+    // Storage
+    localStorage.removeItem(evt.name)
+    localStorage.setItem(x.ikey,
+      JSON.stringify(x))
+  }
+  addNewTask = (event) => {
+    let x = this.state
+    x.tables[x.active].ids.push(uuidv4())
     this.setState({tables: x.tables})
+    // Storage
+    localStorage.setItem(x.ikey,
+      JSON.stringify(x))
   }
   render() {
     let x = this.state
     return (
        <main>
-          <button type = "button" className = "btn btn-primary"
-            onClick = {this.onFieldUpdate} name = "t_index"
-              value = "t1" >{x.tables.name}</button>
-          <button type = "button" className = "btn btn-light"
+         <div class="btn-group">
+           {x.tables.map((val, idx) => {
+             return <button type = "button" name = "active" value = {idx}
+              className = {"btn btn-outline-info"+(x.active == idx ? " active" :"")}
+                onClick = {this.onFieldUpdate} key = {val.ikey}>{val.name}</button>
+           })}
+          </div>
+          <button className = "btn btn-light" type = "button"
             onClick = {this.newTaskTable}>+</button>
-          <TaskPanel ikey = {x.tables[x.t_index]}/>
+          <TaskPanel tasks = {x.tables[x.active].ids} addNewTask = {this.addNewTask}
+            removeTask = {this.removeTask}/>
        </main>
     )
   }
