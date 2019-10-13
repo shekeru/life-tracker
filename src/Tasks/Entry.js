@@ -16,19 +16,19 @@ class TaskEntry extends Component {
   } // Function Defs
   onFieldUpdate = (event) => {
     let x = this.state, evt = event.target
-    this.setState({[evt.name]: x[evt.name] = evt.value})
-    localStorage.setItem(x.ikey, JSON.stringify(x))
+    this.setState({[evt.name]: x[evt.name]
+      = evt.value}, Utils.save_obj(this))
   }
   onUpdateTime = (event) => {
     let x = this.state, evt = event.target
-    this.setState({[evt.name]: x[evt.name] = Date.now()})
-    localStorage.setItem(x.ikey, JSON.stringify(x))
+    this.setState({[evt.name]: x[evt.name]
+      = Date.now()}, Utils.save_obj(this))
   }
   onFlipClick = (event) => {
     let x = this.state, evt = event.target
-    this.setState({bDelete: !x.bDelete})
-    event.preventDefault();
-    console.log(x.bDelete, !x.bDelete);
+    this.setState({bDelete: !x.bDelete},
+      Utils.save_obj(this))
+    event.preventDefault()
   }
   render() {
     let x = this.state, y = this.props

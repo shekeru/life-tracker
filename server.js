@@ -11,9 +11,11 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  socket.on('update', function (from, data) {
+    console.log(from, data);
+  });
 });
 
-http.listen(1337, () => {
-  console.log('listening on *:1337');
+http.listen(4000, () => {
+  console.log('listening on *:4000');
 });

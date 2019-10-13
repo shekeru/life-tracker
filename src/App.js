@@ -11,6 +11,7 @@ class Application extends Component {
       tables: [],
       active: 0
     }; Utils.load_obj(x)
+      x.active = 0
   }
   // Table Management
   newTaskTable = (event) => {
@@ -18,8 +19,8 @@ class Application extends Component {
         name: "default",
         ikey: uuidv4(),
         ids: []
-    }); this.setState({tables: x.tables})
-    localStorage.setItem(x.ikey, JSON.stringify(x))
+    }); this.setState({tables: x.tables},
+      Utils.save_obj(this))
   }
   onFieldUpdate = (event) => {
     let x = this.state, evt = event.target
@@ -27,22 +28,19 @@ class Application extends Component {
   }
   // Task Management
   removeTask = (event) => {
-    let evt = event.target
-    let x = this.state, table = x.tables[x.active]
+    let x = this.state, evt = event.target,
+      table = x.tables[x.active]
     table.ids.splice(table.ids.indexOf(evt.name), 1)
-      this.setState({tables: x.tables})
-    // Storage
-    localStorage.removeItem(evt.name)
-    localStorage.setItem(x.ikey,
-      JSON.stringify(x))
+    // Save State
+    this.setState({tables: x.tables},
+        Utils.save_obj(this))
+    Utils.rm_obj(evt.name)
   }
   addNewTask = (event) => {
     let x = this.state
     x.tables[x.active].ids.push(uuidv4())
-    this.setState({tables: x.tables})
-    // Storage
-    localStorage.setItem(x.ikey,
-      JSON.stringify(x))
+    this.setState({tables: x.tables},
+      Utils.save_obj(this))
   }
   render() {
     let x = this.state
