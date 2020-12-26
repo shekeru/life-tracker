@@ -47,7 +47,7 @@ class Application extends Component {
     return (
        <main>
          <div class="btn-group">
-           {x.tables.map((val, idx) => {
+           {(x.tables || {}).map((val, idx) => {
              return <button type = "button" name = "active" value = {idx}
               className = {"btn btn-outline-info"+(x.active == idx ? " active" :"")}
                 onClick = {this.onFieldUpdate} key = {val.ikey}>{val.name}</button>
@@ -55,7 +55,7 @@ class Application extends Component {
           </div>
           <button className = "btn btn-light" type = "button"
             onClick = {this.newTaskTable}>+</button>
-          <TaskPanel tasks = {x.tables[x.active].ids} addNewTask = {this.addNewTask}
+          <TaskPanel tasks = {(x.tables[x.active] || {}).ids} addNewTask = {this.addNewTask}
             removeTask = {this.removeTask}/>
        </main>
     )

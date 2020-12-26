@@ -22,7 +22,7 @@ class TaskPanel extends Component {
             </tr>
           </thead>
           <tbody>
-            {y.tasks.map(value => {
+            {(y.tasks || []).map(value => {
               return <TaskEntry title = {value} ikey = {value}
                 key = {value} removeTask = {y.removeTask}/>
             })}
