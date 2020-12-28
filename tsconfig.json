@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es2015",
+    "baseUrl": "src",
+    "rootDir": "src",
+    "outDir": "build",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "lib": ["dom", "esnext"]
+  }
+}

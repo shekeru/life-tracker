@@ -1,37 +1,37 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
-   entry: './src/App.js',
-   output: {
-      filename: 'main.js'
-   },
-   devServer: {
-      inline: true,
-      port: 1337
-   },
-   module: {
-      rules: [
-         {
-            test: /\.(js|jsx)$/,
-            exclude: /node_modules/,
-            use: {
-              loader: "babel-loader"
+    entry: './src/Main.tsx',
+    devtool: 'inline-source-map',
+    devServer: {
+        inline: true,
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 1337
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(ts|tsx)?$/,
+                exclude: /node_modules/,
+                use: ['ts-loader']
+            },
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: ['babel-loader']
             }
-         },
-         {
-           test: /\.html$/,
-           use: [
-             {
-               loader: "html-loader"
-             }
-           ]
-      }
-      ]
-   },
-   plugins:[
-      new HtmlWebpackPlugin({
-         template: './index.html'
-      })
-   ]
-}
+        ],
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
+    output: {
+        filename: 'compiled.js',
+        path: path.resolve(__dirname, 'public/src'),
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ]
+};
