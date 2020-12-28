@@ -9,8 +9,7 @@ export function App() {
                 defaultTitle = "Life Tracker"
                 titleTemplate = "%s - Life Tracker"
                 htmlAttributes = {{lang: "en"}}
-            ><meta name="description" content="A tracker to help with negative symptoms." />
-            </Helmet>
+            ></Helmet>
             <Switch>
             </Switch>
             "Hello World!"

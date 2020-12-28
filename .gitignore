@@ -1,5 +1,5 @@
+dist/
 build/
-public/src/
 node_modules/
 secret.*
 *.log

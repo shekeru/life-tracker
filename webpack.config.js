@@ -1,5 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/Main.tsx',
@@ -13,7 +15,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)?$/,
+                test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: ['ts-loader']
             },
@@ -21,6 +23,23 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ['babel-loader']
+            },
+            {
+                test: /\.s(a|c)ss$/,
+                use: [
+                    'style-loader', {
+                        loader: 'css-loader',
+                        options: { modules: true }
+                    }, 'sass-loader'
+                ]
+            }, 
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.html/,
+                use: ['html-loader']
             }
         ],
     },
@@ -29,9 +48,14 @@ module.exports = {
     },
     output: {
         filename: 'compiled.js',
-        path: path.resolve(__dirname, 'public/src'),
+        path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'src/base', 'index.html')
+        }), new CopyWebpackPlugin({
+            patterns: [{ from: 'public', to: '' }]
+        })
     ]
 };
