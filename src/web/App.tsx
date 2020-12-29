@@ -1,23 +1,24 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { FirebaseContext } from '../store/Context';
 
 import { IndexPage } from '../pages/Index'
-import { ForceLogin, LoginPage } from '../pages/Login'
+import { LoginPage } from '../pages/Login'
+import * as User from '../store/User'
 
 
 export function App() {
-    return (
-        <BrowserRouter>
-            <Helmet
-                defaultTitle = "Life Tracker"
-                titleTemplate = "%s - Life Tracker"
-                htmlAttributes = {{lang: "en"}}
-            ></Helmet>
-            <Switch>
-                <ForceLogin exact path = '/' component = {IndexPage} />
-                <Route exact path = '/login' component={LoginPage} />
-            </Switch>
-        </BrowserRouter>
-    );
+    let user = User.Select()
+    return (<>
+        <Helmet
+            defaultTitle = "Life Tracker"
+            titleTemplate = "%s - Life Tracker"
+            htmlAttributes = {{lang: "en"}}
+        ></Helmet>
+        <FirebaseContext.Consumer>
+            {firebase => firebase.auth.currentUser ?
+                (<IndexPage />) : (<LoginPage />)
+            }
+        </FirebaseContext.Consumer>
+    </>);
 };

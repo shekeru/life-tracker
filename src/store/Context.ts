@@ -1,4 +1,6 @@
+import React from 'react';
 import * as Store from './Store';
+import * as firebaseui from 'firebaseui'
 import firebase from 'firebase/app';
 import "firebase/firestore";
 import "firebase/auth";
@@ -11,9 +13,31 @@ const firebaseConfig = {
     messagingSenderId: "923625287207",
     appId: "1:923625287207:web:7cb1310dd7afed19276802",
     measurementId: "G-BG4R24E25W"
-};
+}
+
+const uiConfig = {
+    signInFlow: 'popup',
+    signInOptions: [
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ], callbacks: {
+        signInSuccessWithAuthResult: (val) => false,
+    }
+}
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-export const firestore = firebase.firestore();
-export const auth = firebase.auth();
+export class FireBase {
+    auth: firebase.auth.Auth;
+    ui: firebaseui.auth.AuthUI;
+    firestore: firebase.firestore.Firestore;
+    constructor() {
+        firebase.initializeApp(firebaseConfig);
+        (this.auth = firebase.auth()).setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        this.firestore = firebase.firestore(); this.loginForm();
+    }
+    loginForm () {
+        this.ui = new firebaseui.auth.AuthUI(this.auth);
+        this.ui.start('#firebaseui', uiConfig);
+    }
+}
+
+export const FirebaseContext = React.createContext({} as FireBase);
