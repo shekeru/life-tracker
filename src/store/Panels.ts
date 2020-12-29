@@ -1,5 +1,7 @@
-import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { RootState } from './Store';
 
 interface Entry {
     ikey: string
@@ -31,3 +33,7 @@ export const Slice = createSlice({
         create: createPanel,
     }
 })
+
+export const Select = () => useSelector(
+    (st: RootState) => st.panels || []
+)
