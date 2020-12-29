@@ -1,20 +1,20 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { FireBase } from './Context'
 import * as User from './User'
 import * as Panels from './Panels'
 import * as Active from './Active'
 import {throttle} from 'lodash'
-import './Context'
 
 export interface RootState {
-    user?: User.Account
+    user: User.Account
     panels?: Panels.Panel[]
-    active?: string
+    active: string
 }
 
-export function createAppStore() {
+export function createAppStore(Client : FireBase) {
     let store = configureStore({
-        preloadedState: loadState(),
-        middleware: [],
+        preloadedState: {} as RootState,
+        middleware: [rtFBMiddleWare(Client)],
         reducer: {
             user: User.Slice.reducer,
             panels: Panels.Slice.reducer,
@@ -23,17 +23,20 @@ export function createAppStore() {
         devTools: 
             process.env.NODE_ENV !== 'production' ||
             (process.env.PUBLIC_URL || "").length > 0,
-    });
-    store.subscribe(throttle(() => saveState(store.getState()), 1000));
-    return store;
+    }); 
+    // Register Auth Callback
+    Client.auth.onAuthStateChanged(userAuth => 
+        store.dispatch(User.Slice.actions.update(userAuth))
+    ); return store;
 }
 
-function loadState() {
-    return JSON.parse(localStorage.getItem('state') 
-        || "{}") || {} as RootState
-}
-
-function saveState(state) {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('state', serializedState);
+const rtFBMiddleWare = Client => store => next => action => {
+    next(action); switch(action.type) {
+        case 'panels/create':
+            let st = store.getState()
+            Client.savePanels({'panels': st.panels})
+            return
+        default:
+            return
+    }
 }

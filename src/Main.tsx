@@ -11,8 +11,8 @@ import { FireBase, FirebaseContext } from './store/Context';
 import * as User from './store/User';
 import {App} from './web/App'; 
 
-const FireBaseVal = new FireBase(), store = createAppStore();
-    FireBaseVal.auth.onAuthStateChanged(userAuth => store.dispatch(User.Slice.actions.update(userAuth)))
+const FireBaseVal = new FireBase()
+const store = createAppStore(FireBaseVal);
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
 ReactDOM.render(
@@ -21,7 +21,7 @@ ReactDOM.render(
             <React.StrictMode>
                 <FirebaseContext.Provider value={FireBaseVal}>
                     <App />
-                </FirebaseContext.Provider>,
+                </FirebaseContext.Provider>
             </React.StrictMode>
         </HelmetProvider>
     </Provider>,

@@ -15,5 +15,5 @@ export const Slice = createSlice({
 })
 
 export const Select = () => useSelector(
-    (st: RootState) => st.active || ""
+    (st: RootState) => st.active
 )

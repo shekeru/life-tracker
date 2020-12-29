@@ -38,6 +38,12 @@ export class FireBase {
         this.ui = new firebaseui.auth.AuthUI(this.auth);
         this.ui.start('#firebaseui', uiConfig);
     }
+    loadPanels (userId, updateFn) {
+        this.firestore.collection("users").doc(userId).get().then(val => updateFn(val.data()))
+    }
+    savePanels (data) {
+        this.firestore.collection("users").doc(this.auth.currentUser?.uid).set(data)
+    }
 }
 
 export const FirebaseContext = React.createContext({} as FireBase);

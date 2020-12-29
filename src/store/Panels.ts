@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { FireBase } from './Context';
 import { RootState } from './Store';
 
 interface Entry {
@@ -16,7 +17,11 @@ export interface Panel {
     entries: Entry[]
 }
 
-export function createPanel(state) {
+function loadPanels(state, action) {
+    return (state = action.payload)
+}
+
+function createPanel(state) {
     let next = {
         ikey: uuidv4(), 
         title: "New Panel", 
@@ -28,9 +33,10 @@ export function createPanel(state) {
 
 export const Slice = createSlice({
     name: 'panels',
-    initialState: [],
+    initialState: null as (Panel[] | null),
     reducers: {
         create: createPanel,
+        load: loadPanels,
     }
 })
 

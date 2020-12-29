@@ -14,12 +14,12 @@ function updateUser(state, action) {
 
 export const Slice = createSlice({
     name: 'user',
-    initialState: {},
+    initialState: {} as Account,
     reducers: {
         update: updateUser
     }
 })
 
 export const Select = () => useSelector(
-    (st: RootState) => st.user || {} as Account
+    (st: RootState) => st.user
 )

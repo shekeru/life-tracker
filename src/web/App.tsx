@@ -17,8 +17,8 @@ export function App() {
         ></Helmet>
         <FirebaseContext.Consumer>
             {firebase => firebase.auth.currentUser ?
-                (<IndexPage />) : (<LoginPage />)
-            }
+                (<IndexPage user={user} />) : 
+                (<LoginPage />)}
         </FirebaseContext.Consumer>
     </>);
 };
