@@ -27,10 +27,14 @@ module.exports = {
             {
                 test: /\.s(a|c)ss$/,
                 use: [
-                    'style-loader', {
-                        loader: 'css-loader',
-                        options: { modules: true }
-                    }, 'sass-loader'
+                    'style-loader', 'css-loader', 'postcss-loader', {
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                includePaths: [path.resolve(__dirname, 'node_modules/bootstrap/scss')]
+                            }
+                        }
+                    }
                 ]
             }, 
             {
@@ -53,7 +57,7 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, 'src/base', 'index.html')
+            template: path.resolve(__dirname, 'src/web', 'index.html')
         }), new CopyWebpackPlugin({
             patterns: [{ from: 'public', to: '' }]
         })
