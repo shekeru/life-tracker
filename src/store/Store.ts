@@ -32,6 +32,9 @@ export function createAppStore(Client : FireBase) {
 
 const rtFBMiddleWare = Client => store => next => action => {
     next(action); switch(action.type) {
+        case 'user/update':
+            Client.loadPanels(val => store.dispatch(Panels.Slice.actions.load(val.panels)))
+            return
         case 'panels/create':
             let st = store.getState()
             Client.savePanels({'panels': st.panels})

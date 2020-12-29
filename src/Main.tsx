@@ -11,15 +11,15 @@ import { FireBase, FirebaseContext } from './store/Context';
 import * as User from './store/User';
 import {App} from './web/App'; 
 
-const FireBaseVal = new FireBase()
-const store = createAppStore(FireBaseVal);
+const ClientFB = new FireBase()
+const store = createAppStore(ClientFB);
 const MOUNT_NODE = document.getElementById('root') as HTMLElement;
 
 ReactDOM.render(
     <Provider store={store}>
         <HelmetProvider>
             <React.StrictMode>
-                <FirebaseContext.Provider value={FireBaseVal}>
+                <FirebaseContext.Provider value={ClientFB}>
                     <App />
                 </FirebaseContext.Provider>
             </React.StrictMode>

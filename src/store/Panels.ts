@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FireBase } from './Context';
 import { RootState } from './Store';
 
-interface Entry {
+export interface Entry {
     ikey: string
     title: string
     last: number

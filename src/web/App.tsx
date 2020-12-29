@@ -6,7 +6,6 @@ import { IndexPage } from '../pages/Index'
 import { LoginPage } from '../pages/Login'
 import * as User from '../store/User'
 
-
 export function App() {
     let user = User.Select()
     return (<>
@@ -17,8 +16,7 @@ export function App() {
         ></Helmet>
         <FirebaseContext.Consumer>
             {firebase => firebase.auth.currentUser ?
-                (<IndexPage user={user} />) : 
-                (<LoginPage />)}
+                (<IndexPage user={user} />) : (<LoginPage />)}
         </FirebaseContext.Consumer>
     </>);
 };
