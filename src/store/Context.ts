@@ -4,6 +4,7 @@ import * as firebaseui from 'firebaseui'
 import firebase from 'firebase/app';
 import "firebase/firestore";
 import "firebase/auth";
+import _ from 'lodash';
 
 const firebaseConfig = {
     apiKey: "AIzaSyA3Bji8Hii9jx-TohzWrQVKg1ruLaQ4UwM",
@@ -29,10 +30,12 @@ export class FireBase {
     auth: firebase.auth.Auth;
     ui: firebaseui.auth.AuthUI;
     firestore: firebase.firestore.Firestore;
+    t_savePanels: _.DebouncedFunc<(data: any) => void>;
     constructor() {
         firebase.initializeApp(firebaseConfig);
         (this.auth = firebase.auth()).setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         this.firestore = firebase.firestore(); this.loginForm();
+        this.t_savePanels = _.throttle(this.savePanels, 3000);
     }
     loginForm () {
         this.ui = new firebaseui.auth.AuthUI(this.auth);

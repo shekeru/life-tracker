@@ -13,6 +13,7 @@ export function IndexPage(props) {
     let active = Active.Select()
     if(!active && panels.length)
         dispatch(Active.Slice.actions.update(panels[0].ikey))
+    let current = panels.find(el => el.ikey == active)
     return (<>
         <div className="btn-group">
             {panels.map((val, idx) => (
@@ -23,6 +24,7 @@ export function IndexPage(props) {
         <button className="btn btn-light" type="button"
             onClick={() => dispatch(Panels.Slice.actions.create())}>+</button>
         <button className="btn userBtn">{props.user.displayName}</button>
-        <TaskPanel current={panels.find(el => el.ikey == active)} />
+        <TaskPanel current={current} newTask={() => 
+            dispatch(Panels.Slice.actions.addEntry(current?.ikey))}/>
     </>)
 }

@@ -7,14 +7,41 @@ import { RootState } from './Store';
 export interface Entry {
     ikey: string
     title: string
+    interval: number
+    units: number
     last: number
-    freq: number
 }
 
 export interface Panel {
     ikey: string
     title: string
     entries: Entry[]
+}
+
+function updateEntry(state, action) {
+    let curr = state.find(el => el.ikey == action.payload.parent)
+    let task = curr.entries.find(el => el.ikey == action.payload.ikey)
+    Object.assign(task, action.payload); delete task.parent
+    return state
+}
+
+function deleteEntry(state, action) {
+    let curr = state.find(el => el.ikey == action.payload.parent)
+    let where = curr.entries.findIndex(el => el.ikey == action.payload.ikey)
+    curr.entries.splice(where, 1)
+    return state
+}
+
+function newEntry(state, action) {
+    let curr = state.find(el => el.ikey == action.payload)
+    curr.entries.push({
+        ikey: uuidv4(),
+        last: Date.now(),
+        title: "New Task",
+        units: 3600000,
+        interval: 1,
+    } as Entry)
+    return state
 }
 
 function loadPanels(state, action) {
@@ -35,6 +62,9 @@ export const Slice = createSlice({
     name: 'panels',
     initialState: null as (Panel[] | null),
     reducers: {
+        addEntry: newEntry,
+        delEntry: deleteEntry,
+        editEntry: updateEntry,
         create: createPanel,
         load: loadPanels,
     }

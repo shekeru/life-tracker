@@ -1,5 +1,7 @@
-import React from "react"
+import React, { useState } from "react"
+import { useDispatch } from "react-redux"
 import * as Panels from '../store/Panels'
+import TimeAgo from 'react-timeago'
 
 export function TaskPanel(props) {
     return (
@@ -11,53 +13,58 @@ export function TaskPanel(props) {
                     <th scope="col">Intervals</th>
                     <th scope="col">
                         <button type="button" className="btn btn-outline-primary"
-                            onClick = {() => {}}>New Entry</button>
+                            onClick = {props.newTask}>New Entry</button>
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {props.current?.entries.map((entry: Panels.Entry) => 
-                    <TaskEntry title={entry.title} ikey={entry.ikey} 
-                        last={entry.last} freq={entry.freq} />)}
+                    <TaskEntry title={entry.title} key={entry.ikey} ikey={entry.ikey} units={entry.units}
+                        parent={props.current} last={entry.last} interval={entry.interval} />)}
             </tbody>
         </table>
     )
 }
 
 function TaskEntry(props) {
+    const dispatch = useDispatch()
+    const [bDelete, setDelete] = useState(false)
+    const base = {parent: props.parent.ikey, ikey: props.ikey}
+    let editField = (ev) => dispatch(Panels.Slice.actions.editEntry({
+        [ev.target.name]: ev.target.numericValue || ev.target.value, ...base}))
     return (
         <tr>
             <td>
-                {/* <TimeAgo date={x.timestamp} className={(() => {
-                    let diff = Date.now() - x.timestamp
-                    let range = x.interval * x.units
+                <TimeAgo date={props.last} className={(() => {
+                    let diff = Date.now() - props.last
+                    let range = props.interval * props.units
                     if (diff > range * 0.95)
-                        return "text-danger "
-                            + "font-weight-bold"
+                        return "text-danger font-weight-bold"
                     if (diff > range * 0.75)
                         return "text-warning"
-                })()} /> */}
+                })()} />
             </td>
             <td>
                 <input type="text" name="title" value={props.title}
-                    onChange={this.onFieldUpdate} />
+                    onChange={editField} />
             </td>
             <td>
                 <input type="number" name="interval"
-                    value={props.interval} onChange={this.onFieldUpdate} />
-                <select name="units" onChange={this.onFieldUpdate}
-                    value={props.units}><option value={undefined}></option>
-                    <option value="3600000">Hours</option>
-                    <option value="86400000">Days</option>
+                    value={props.interval} onChange={editField} />
+                <select name="units" onChange={editField} value={props.units}>
+                    <option value={3600000}>Hours</option>
+                    <option value={86400000}>Days</option>
                 </select>
             </td>
             <td>
                 <button type="button" className="btn btn-outline-success"
-                    name="timestamp" onClick={() => {}} hidden={props.bDelete}
-                    onContextMenu={this.onFlipClick}>Refresh</button>
+                    onContextMenu={(ev) => {ev.preventDefault(); setDelete(true)}}
+                    onClick={() => dispatch(Panels.Slice.actions.editEntry({
+                        last: Date.now(), ...base}))} hidden={bDelete}>Refresh</button>
                 <button type="button" className="btn btn-danger"
-                    name={props.ikey} onClick={() => {}} hidden={!props.bDelete}
-                    onContextMenu={this.onFlipClick}>Delete</button>
+                    onContextMenu={(ev) => {ev.preventDefault(); setDelete(false)}}
+                    onClick={() => dispatch(Panels.Slice.actions.delEntry({
+                        ...base}))} hidden={!bDelete}>Delete</button>
             </td>
         </tr>
     )

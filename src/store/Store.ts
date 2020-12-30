@@ -19,10 +19,7 @@ export function createAppStore(Client : FireBase) {
             user: User.Slice.reducer,
             panels: Panels.Slice.reducer,
             active: Active.Slice.reducer,
-        }, 
-        devTools: 
-            process.env.NODE_ENV !== 'production' ||
-            (process.env.PUBLIC_URL || "").length > 0,
+        }, devTools: process.env.NODE_ENV !== 'production'
     }); 
     // Register Auth Callback
     Client.auth.onAuthStateChanged(userAuth => 
@@ -33,11 +30,15 @@ export function createAppStore(Client : FireBase) {
 const rtFBMiddleWare = Client => store => next => action => {
     next(action); switch(action.type) {
         case 'user/update':
-            Client.loadPanels(val => store.dispatch(Panels.Slice.actions.load(val.panels)))
+            Client.loadPanels(val => 
+                store.dispatch(Panels.Slice.actions.load(val?.panels || [])))
             return
+        case 'panels/addEntry':
+        case 'panels/delEntry':
+        case 'panels/editEntry':
         case 'panels/create':
             let st = store.getState()
-            Client.savePanels({'panels': st.panels})
+            Client.t_savePanels({'panels': st.panels})
             return
         default:
             return

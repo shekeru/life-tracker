@@ -1,5 +1,6 @@
 dist/
 build/
+.firebase/
 node_modules/
 secret.*
 *.log
