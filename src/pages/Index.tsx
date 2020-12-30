@@ -18,7 +18,11 @@ export function IndexPage(props) {
         <div className="btn-group">
             {panels.map((val, idx) => (
                 <button type="button" className={"btn btn-outline-info" + (active == val.ikey ? " active" : "")}
-                    onClick={() => dispatch(Active.Slice.actions.update(val.ikey))} key={val.ikey}>{val.title}</button>
+                    onClick={() => dispatch(Active.Slice.actions.update(val.ikey))} key={val.ikey}
+                    onContextMenu={(ev) => { 
+                        ev.preventDefault()
+                        console.log(ev.clientX, ev.clientY) 
+                }}>{val.title}</button>
             ))}
         </div>
         <button className="btn btn-light" type="button"
