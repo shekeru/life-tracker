@@ -43,7 +43,7 @@ function TaskEntry(props) {
                         return "text-warning"
                 })()} />
             </td>
-            <td style={{}}>
+            <td>
                 <input className="form-control" type="text" name="title" value={props.title} onChange={editField} />
             </td>
             <td>

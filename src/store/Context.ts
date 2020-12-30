@@ -42,12 +42,11 @@ export class FireBase {
         this.ui.start('#firebaseui', uiConfig);
     }
     loadPanels (updateFn) {
-        if(this.auth.currentUser)
-            this.firestore.collection("users").doc(this.auth.currentUser?.uid).get().then(val => updateFn(val.data()))
+        this.firestore.collection("users").doc(this.auth.currentUser?.uid).onSnapshot(val => updateFn(val.data()))
+        this.firestore.collection("users").doc(this.auth.currentUser?.uid).get().then(val => updateFn(val.data()))
     }
     savePanels (data) {
-        if(this.auth.currentUser)
-            this.firestore.collection("users").doc(this.auth.currentUser?.uid).set(data)
+        this.firestore.collection("users").doc(this.auth.currentUser?.uid).set(data)
     }
 }
 
