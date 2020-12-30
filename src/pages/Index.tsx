@@ -26,6 +26,8 @@ export function IndexPage(props) {
                             xPos: ev.clientX, yPos: ev.clientY,
                             opts: [
                                 <span onClick={() => updateEdit(val.ikey)}>Rename</span>,
+                                <span onClick={() => dispatch(Panels.Slice.actions.move({idx: idx, delta: -1}))}>Move Left</span>,
+                                <span onClick={() => dispatch(Panels.Slice.actions.move({idx: idx, delta: +1}))}>Move Right</span>,
                                 <span onClick={() => dispatch(Panels.Slice.actions.remove(val.ikey))}>Delete</span>,
                             ]
                         }))

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import * as Panels from '../store/Panels'
 import TimeAgo from 'react-timeago'
@@ -33,15 +33,8 @@ function TaskEntry(props) {
         [ev.target.name]: ev.target.numericValue || ev.target.value, ...base}))
     return (
         <tr>
-            <td style={{textAlign: "center", width: "125pt"}}>
-                <TimeAgo date={props.last} className={(() => {
-                    let diff = Date.now() - props.last
-                    let range = props.interval * props.units
-                    if (diff > range * 0.95)
-                        return "text-danger font-weight-bold"
-                    if (diff > range * 0.75)
-                        return "text-warning"
-                })()} />
+            <td style={{textAlign: "center", width: "120pt"}}>
+                <TimeEntry last={props.last} diff={ - props.last} range={props.interval * props.units} />
             </td>
             <td>
                 <input className="form-control" type="text" name="title" value={props.title} onChange={editField} />
@@ -79,4 +72,16 @@ function TaskEntry(props) {
             </td>
         </tr>
     )
+}
+
+function TimeEntry(props) {
+    const [time, setTime] = useState(Date.now()), delta = time - props.last
+    useEffect(() => {setTimeout(() => setTime(Date.now()), 
+        (delta <= 60) ? 150 : 1000)}, [time])
+    return <TimeAgo date={props.last} className={(() => {
+        if (delta > props.range * 0.95)
+            return "text-danger font-weight-bold"
+        if (delta > props.range * 0.75)
+            return "text-warning"
+    })()} />
 }

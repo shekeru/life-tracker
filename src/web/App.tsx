@@ -19,6 +19,6 @@ export function App() {
             {firebase => firebase.auth.currentUser ?
                 (<IndexPage user={user} />) : (<LoginPage />)}
         </FirebaseContext.Consumer>
-        <ContextMenu />
+        <ContextMenu /><span id="version">Dec 30, 2020</span>
     </>);
 };

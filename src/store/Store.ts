@@ -43,6 +43,7 @@ const rtFBMiddleWare = Client => store => next => action => {
         case 'panels/rename':
         case 'panels/remove':
         case 'panels/create':
+        case 'panels/move':
             let st = store.getState()
             Client.t_savePanels({'panels': st.panels})
             return

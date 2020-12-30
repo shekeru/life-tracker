@@ -18,6 +18,15 @@ export interface Panel {
     entries: Entry[]
 }
 
+function movePanels(state, action){
+    const Y = action.payload.idx + action.payload.delta
+    if (Y < 0 || Y >= state.length) 
+        return state
+    const tmp = state[action.payload.idx] 
+    state[action.payload.idx] = state[action.payload.idx + action.payload.delta]
+    state[action.payload.idx + action.payload.delta] = tmp; return state
+}
+
 function swapEntry(state, action) {
     const Y = action.payload.idx + action.payload.delta
     const arr = state.find(el => el.ikey == action.payload.parent).entries
@@ -89,6 +98,7 @@ export const Slice = createSlice({
         create: createPanel,
         remove: removePanel,
         rename: renamePanel,
+        move: movePanels,
         load: loadPanels,
     }
 })
