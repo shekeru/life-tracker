@@ -8,12 +8,11 @@ export function TaskPanel(props) {
         <table className="table">
             <thead>
                 <tr>
-                    <th scope="col">Last Action</th>
-                    <th scope="col">Task Name</th>
-                    <th scope="col">Intervals</th>
-                    <th scope="col">
-                        <button type="button" className="btn btn-outline-primary"
-                            onClick = {props.newTask}>New Entry</button>
+                    <th scope="col" className="basic_header">Time Elapsed</th>
+                    <th scope="col" className="basic_header">Task Description</th>
+                    <th scope="col" className="basic_header" style={{width: "125pt" }}>Frequency</th>
+                    <th scope="col" className="basic_header" style={{textAlign: "right", width: "190px" }}>
+                        <a className="btn btn-outline-primary abtn" onClick = {props.newTask}>New Entry</a>
                     </th>
                 </tr>
             </thead>
@@ -34,7 +33,7 @@ function TaskEntry(props) {
         [ev.target.name]: ev.target.numericValue || ev.target.value, ...base}))
     return (
         <tr>
-            <td>
+            <td style={{textAlign: "center", width: "125pt"}}>
                 <TimeAgo date={props.last} className={(() => {
                     let diff = Date.now() - props.last
                     let range = props.interval * props.units
@@ -44,15 +43,17 @@ function TaskEntry(props) {
                         return "text-warning"
                 })()} />
             </td>
-            <td>
-                <input type="text" name="title" value={props.title} onChange={editField} />
+            <td style={{}}>
+                <input className="form-control" type="text" name="title" value={props.title} onChange={editField} />
             </td>
             <td>
-                <input type="text" name="interval" value={props.interval} onChange={editField} />
-                <select name="units" onChange={editField} value={props.units}>
-                    <option value={3600000}>Hours</option>
-                    <option value={86400000}>Days</option>
-                </select>
+                <div className="form-row">
+                    <input className="form-control col-5" type="text" name="interval" value={props.interval} onChange={editField} />
+                    <select className="form-control col-7" name="units" onChange={editField} value={props.units}>
+                        <option value={3600000}>Hours</option>
+                        <option value={86400000}>Days</option>
+                    </select>
+                </div>
             </td>
             <td>
                 <button type="button" className="btn btn-outline-success"

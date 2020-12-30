@@ -30,8 +30,9 @@ export function IndexPage(props) {
                             ]
                         }))
                     }}>{editing == val.ikey ? 
-                        <input type="text" autoFocus onBlur={() => updateEdit("")} onKeyPress={(ev) => {if (ev.key == 'Enter') updateEdit("")}}
-                            value={val.title} onChange={(ev) => dispatch(Panels.Slice.actions.rename({idx: idx, title: ev.target.value}))} /> 
+                        <input type="text" autoFocus onBlur={() => updateEdit("")}
+                            onKeyPress={(ev) => { if (ev.key == 'Enter') updateEdit("") }} value={val.title} 
+                            onChange={(ev) => dispatch(Panels.Slice.actions.rename({idx: idx, title: ev.target.value}))} /> 
                     : val.title}</button>))}
         </div>
         <button className="btn btn-light" type="button"
