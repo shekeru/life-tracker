@@ -2,7 +2,7 @@
 
 body
     background-color: $light
-    min-width: 800px
+    min-width: 825px
 
 #firebaseui
     width: 200pt
@@ -16,3 +16,32 @@ body
 
 .orders
     float: right
+
+#root
+    height: 100vh
+
+#ctxmenu 
+    border: 1pt outset $dark
+    position: absolute
+    background: $white
+    border-radius: 2pt
+    z-index: 500
+    margin: 0
+
+#ctxmenu > ul
+    cursor: pointer
+    list-style: none
+    padding: 0
+    margin: 0
+
+#ctxmenu > ul > li
+    border-bottom: 1pt outset $dark
+    padding: 0pt 3pt
+
+#ctxmenu > ul > li:hover
+    font-weight: bold
+    background: $primary
+    color: $white
+
+#ctxmenu > ul > li:last-child
+    border: none

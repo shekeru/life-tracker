@@ -58,6 +58,16 @@ function loadPanels(state, action) {
     return (state = action.payload)
 }
 
+function removePanel(state, action) {
+    let idx = state.findIndex(el => el.ikey == action.payload)
+    state.splice(idx, 1); return state
+}
+
+function renamePanel(state, action) {
+    state[action.payload.idx].title = action.payload.title
+    return state
+}
+
 function createPanel(state) {
     let next = {
         ikey: uuidv4(), 
@@ -77,6 +87,8 @@ export const Slice = createSlice({
         delEntry: deleteEntry,
         editEntry: updateEntry,
         create: createPanel,
+        remove: removePanel,
+        rename: renamePanel,
         load: loadPanels,
     }
 })

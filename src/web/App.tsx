@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { FirebaseContext } from '../store/Context';
+import { ContextMenu } from '../components/CtxMenu'
 
 import { IndexPage } from '../pages/Index'
 import { LoginPage } from '../pages/Login'
@@ -18,5 +19,6 @@ export function App() {
             {firebase => firebase.auth.currentUser ?
                 (<IndexPage user={user} />) : (<LoginPage />)}
         </FirebaseContext.Consumer>
+        <ContextMenu />
     </>);
 };
