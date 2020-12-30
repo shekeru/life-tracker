@@ -1,5 +1,6 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles/application.sass';
 
 import React from 'react';

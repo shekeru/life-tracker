@@ -18,6 +18,16 @@ export interface Panel {
     entries: Entry[]
 }
 
+function swapEntry(state, action) {
+    const Y = action.payload.idx + action.payload.delta
+    const arr = state.find(el => el.ikey == action.payload.parent).entries
+    if (Y < 0 || Y >= arr.length) 
+        return state
+    const tmp = arr[action.payload.idx] 
+    arr[action.payload.idx] = arr[action.payload.idx + action.payload.delta]
+    arr[action.payload.idx + action.payload.delta] = tmp; return state
+}
+
 function updateEntry(state, action) {
     let curr = state.find(el => el.ikey == action.payload.parent)
     let task = curr.entries.find(el => el.ikey == action.payload.ikey)
@@ -62,6 +72,7 @@ export const Slice = createSlice({
     name: 'panels',
     initialState: null as (Panel[] | null),
     reducers: {
+        mvEntry: swapEntry,
         addEntry: newEntry,
         delEntry: deleteEntry,
         editEntry: updateEntry,

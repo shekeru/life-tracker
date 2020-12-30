@@ -18,9 +18,9 @@ export function TaskPanel(props) {
                 </tr>
             </thead>
             <tbody>
-                {props.current?.entries.map((entry: Panels.Entry) => 
+                {props.current?.entries.map((entry: Panels.Entry, idx) => 
                     <TaskEntry title={entry.title} key={entry.ikey} ikey={entry.ikey} units={entry.units}
-                        parent={props.current} last={entry.last} interval={entry.interval} />)}
+                        idx={idx} parent={props.current} last={entry.last} interval={entry.interval} />)}
             </tbody>
         </table>
     )
@@ -45,12 +45,10 @@ function TaskEntry(props) {
                 })()} />
             </td>
             <td>
-                <input type="text" name="title" value={props.title}
-                    onChange={editField} />
+                <input type="text" name="title" value={props.title} onChange={editField} />
             </td>
             <td>
-                <input type="number" name="interval"
-                    value={props.interval} onChange={editField} />
+                <input type="text" name="interval" value={props.interval} onChange={editField} />
                 <select name="units" onChange={editField} value={props.units}>
                     <option value={3600000}>Hours</option>
                     <option value={86400000}>Days</option>
@@ -65,6 +63,18 @@ function TaskEntry(props) {
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(false)}}
                     onClick={() => dispatch(Panels.Slice.actions.delEntry({
                         ...base}))} hidden={!bDelete}>Delete</button>
+                <div className="btn-group orders">
+                    <button type="button" className="btn" onClick={(ev) => {
+                        dispatch(Panels.Slice.actions.mvEntry({
+                            parent: props.parent.ikey, idx: props.idx, delta: -1
+                        })); ev.preventDefault()
+                    }}><i className="bi bi-arrow-up"></i></button>
+                    <button type="button" className="btn" onClick={(ev) => {
+                        dispatch(Panels.Slice.actions.mvEntry({
+                            parent: props.parent.ikey, idx: props.idx, delta: 1
+                        })); ev.preventDefault()
+                    }}><i className="bi bi-arrow-down"></i></button>
+                </div>
             </td>
         </tr>
     )

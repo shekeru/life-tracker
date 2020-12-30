@@ -22,8 +22,7 @@ export function IndexPage(props) {
                     onContextMenu={(ev) => { 
                         ev.preventDefault()
                         console.log(ev.clientX, ev.clientY) 
-                }}>{val.title}</button>
-            ))}
+                }}>{val.title}</button>))}
         </div>
         <button className="btn btn-light" type="button"
             onClick={() => dispatch(Panels.Slice.actions.create())}>+</button>

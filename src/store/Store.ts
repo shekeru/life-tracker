@@ -33,6 +33,7 @@ const rtFBMiddleWare = Client => store => next => action => {
             Client.loadPanels(val => 
                 store.dispatch(Panels.Slice.actions.load(val?.panels || [])))
             return
+        case 'panels/mvEntry':
         case 'panels/addEntry':
         case 'panels/delEntry':
         case 'panels/editEntry':
