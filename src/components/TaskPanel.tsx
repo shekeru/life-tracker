@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { ChangeEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import * as Panels from '../store/Panels'
 import TimeAgo from 'react-timeago'
@@ -30,7 +30,8 @@ function TaskEntry(props) {
     const [bDelete, setDelete] = useState(false)
     const base = {parent: props.parent.ikey, ikey: props.ikey}
     let editField = (ev) => dispatch(Panels.Slice.actions.editEntry({
-        [ev.target.name]: ev.target.numericValue || ev.target.value, ...base}))
+        [ev.target.name]: ev.target.type == "text" ? ev.target.value : 
+            (parseInt(ev.target.value) || ev.target.value), ...base}))
     return (
         <tr>
             <td style={{textAlign: "center", width: "120pt"}}>
@@ -39,14 +40,12 @@ function TaskEntry(props) {
             <td>
                 <input className="form-control" type="text" name="title" value={props.title} onChange={editField} />
             </td>
-            <td>
-                <div className="form-row">
-                    <input className="form-control col-5" type="text" name="interval" value={props.interval} onChange={editField} />
-                    <select className="form-control col-7" name="units" onChange={editField} value={props.units}>
-                        <option value={3600000}>Hours</option>
-                        <option value={86400000}>Days</option>
-                    </select>
-                </div>
+            <td className="form-row">
+                <input className="form-control col-5" type="number" name="interval" value={props.interval} onChange={editField} />
+                <select className="form-control col-7" name="units" onChange={editField} value={props.units}>
+                    <option value={3600000}>Hours</option>
+                    <option value={86400000}>Days</option>
+                </select>
             </td>
             <td>
                 <button type="button" className="btn btn-outline-success"
