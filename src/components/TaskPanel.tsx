@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import * as Panels from '../store/Panels'
 import TimeAgo from 'react-timeago'
+import { isNumber } from "lodash"
 
 export function TaskPanel(props) {
     return (
@@ -30,8 +31,8 @@ function TaskEntry(props) {
     const [bDelete, setDelete] = useState(false)
     const base = {parent: props.parent.ikey, ikey: props.ikey}
     let editField = (ev) => dispatch(Panels.Slice.actions.editEntry({
-        [ev.target.name]: ev.target.type == "text" ? ev.target.value : 
-            (parseInt(ev.target.value) || ev.target.value), ...base}))
+        [ev.target.name]: ev.target.type == "text" ? ev.target.value 
+            : BetterNumber(ev.target.value), ...base}))
     return (
         <tr>
             <td style={{textAlign: "center", width: "120pt"}}>
@@ -83,4 +84,9 @@ function TimeEntry(props) {
         if (delta > props.range * 0.75)
             return "text-warning"
     })()} />
+}
+
+function BetterNumber(value) {
+    const parsed = Number(value) 
+    return NaN !== parsed ? parsed : value
 }
