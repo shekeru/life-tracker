@@ -76,19 +76,25 @@ function TaskEntry(props) {
 
 function TimeEntry(props) {
     const [time, setTime] = useState(Date.now()), delta = time - props.last
-    useEffect(() => {setTimeout(() => setTime(Date.now()), 
-        (delta <= 60) ? 150 : 1000)}, [time])
-    if (!props.last) 
-        return <span className="font-weight-bold">Never</span>
-    return <TimeAgo date={props.last} className={(() => {
-        if (delta > props.range * 0.95)
-            return "text-danger font-weight-bold"
-        if (delta > props.range * 0.75)
-            return "text-warning"
-    })()} />
+    useEffect(() => {
+        let timeout = setTimeout(() => setTime(Date.now()), (delta <= 60) ? 150 : 1000)
+        return () => {clearTimeout(timeout)}
+    }, [time])
+    return <>{(props.last) ? 
+        <TimeAgo date={props.last} className={BetterClass(delta, props.range)} /> : 
+        <span className="font-weight-bold">Never</span>
+    }</>
 }
 
 function BetterNumber(value) {
     const parsed = Number(value) 
     return NaN !== parsed ? parsed : value
+}
+
+function BetterClass(delta, range) {
+    if (delta > range * 0.95)
+        return "text-danger font-weight-bold"
+    if (delta > range * 0.75)
+        return "text-warning"
+    return ""
 }
