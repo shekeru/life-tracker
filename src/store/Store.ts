@@ -36,6 +36,10 @@ const rtFBMiddleWare = Client => store => next => action => {
             Client.loadPanels(val => 
                 store.dispatch(Panels.Slice.actions.load(val?.panels || [])))
             return
+        case 'user/logout':
+            Client.auth.signOut()
+            window.location.reload()
+            return
         case 'panels/mvEntry':
         case 'panels/addEntry':
         case 'panels/delEntry':

@@ -9,7 +9,8 @@ import * as Panels from '../store/Panels'
 import * as User from '../store/User'
 
 export function IndexPage(props) {
-    let [editing, updateEdit] = useState("");
+    const [editing, updateEdit] = useState("");
+    const [showMenu, menuToggle] = useState(false);
     const dispatch = useDispatch()
     let panels = Panels.Select()
     let active = Active.Select()
@@ -25,10 +26,10 @@ export function IndexPage(props) {
                         dispatch(CtxMenu.Slice.actions.enable({
                             xPos: ev.clientX, yPos: ev.clientY,
                             opts: [
-                                <span onClick={() => updateEdit(val.ikey)}>Rename</span>,
-                                <span onClick={() => dispatch(Panels.Slice.actions.move({idx: idx, delta: -1}))}>Move Left</span>,
-                                <span onClick={() => dispatch(Panels.Slice.actions.move({idx: idx, delta: +1}))}>Move Right</span>,
-                                <span onClick={() => dispatch(Panels.Slice.actions.remove(val.ikey))}>Delete</span>,
+                                {event: () => updateEdit(val.ikey), text: "Rename"},
+                                {event: () => dispatch(Panels.Slice.actions.move({idx: idx, delta: -1})), text: "Move Left"},
+                                {event: () => dispatch(Panels.Slice.actions.move({idx: idx, delta: +1})), text: "Move Right"},
+                                {event: () => dispatch(Panels.Slice.actions.remove(val.ikey)), text: "Delete"},
                             ]
                         }))
                     }}>{editing == val.ikey ? 
@@ -39,7 +40,14 @@ export function IndexPage(props) {
         </div>
         <button className="btn btn-light" type="button"
             onClick={() => dispatch(Panels.Slice.actions.create())}>+</button>
-        <button className="btn userBtn">{props.user.displayName}</button>
+        <div className="dropdown right">
+            <button className="btn" onClick={() => menuToggle(!showMenu)}>{props.user.displayName}</button>
+            <div id="user-menu" className="dropdown-menu dropdown-menu-right" hidden={!showMenu}>
+                {/* <button className="dropdown-item">Settings [WIP]</button> */}
+                <button onClick={() => dispatch(User.Slice.actions.logout())}
+                    className="dropdown-item">Logout</button>
+            </div>
+        </div>
         <TaskPanel current={current} newTask={() => 
             dispatch(Panels.Slice.actions.addEntry(current?.ikey))}/>
     </>)

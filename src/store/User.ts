@@ -12,11 +12,16 @@ function updateUser(state, action) {
     return (state = action.payload)
 }
 
+function rmUser(state) {
+    return state
+}
+
 export const Slice = createSlice({
     name: 'user',
     initialState: {} as Account,
     reducers: {
-        update: updateUser
+        update: updateUser,
+        logout: rmUser
     }
 })
 

@@ -55,10 +55,10 @@ function newEntry(state, action) {
     let curr = state.find(el => el.ikey == action.payload)
     curr.entries.push({
         ikey: uuidv4(),
-        last: Date.now(),
         title: "New Task",
         units: 3600000,
         interval: 1,
+        last: 0,
     } as Entry)
     return state
 }

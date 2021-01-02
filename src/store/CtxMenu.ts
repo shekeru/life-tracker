@@ -2,8 +2,13 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './Store';
 
+interface CtxEntry {
+    event: () => any
+    text: string
+}
+
 export interface CtxMenu {
-    opts: HTMLElement[]
+    opts: CtxEntry[]
     show: boolean
     yPos: number
     xPos: number

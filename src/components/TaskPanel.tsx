@@ -35,7 +35,7 @@ function TaskEntry(props) {
             : BetterNumber(ev.target.value), ...base}))
     return (
         <tr>
-            <td style={{textAlign: "center", width: "120pt"}}>
+            <td style={{textAlign: "center", verticalAlign: "middle", width: "120pt"}}>
                 <TimeEntry last={props.last} diff={ - props.last} range={props.interval * props.units} />
             </td>
             <td>
@@ -57,7 +57,7 @@ function TaskEntry(props) {
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(false)}}
                     onClick={() => dispatch(Panels.Slice.actions.delEntry({
                         ...base}))} hidden={!bDelete}>Delete</button>
-                <div className="btn-group orders">
+                <div className="btn-group right">
                     <button type="button" className="btn" onClick={(ev) => {
                         dispatch(Panels.Slice.actions.mvEntry({
                             parent: props.parent.ikey, idx: props.idx, delta: -1
@@ -78,6 +78,8 @@ function TimeEntry(props) {
     const [time, setTime] = useState(Date.now()), delta = time - props.last
     useEffect(() => {setTimeout(() => setTime(Date.now()), 
         (delta <= 60) ? 150 : 1000)}, [time])
+    if (!props.last) 
+        return <span className="font-weight-bold">Never</span>
     return <TimeAgo date={props.last} className={(() => {
         if (delta > props.range * 0.95)
             return "text-danger font-weight-bold"

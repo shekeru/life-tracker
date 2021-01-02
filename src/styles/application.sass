@@ -1,5 +1,9 @@
 @import "bootstrap"
 
+#root
+    overflow: hidden
+    height: 100vh
+
 body
     background-color: $light
     min-width: 800px
@@ -11,39 +15,34 @@ body
     background-color: $white
     border-radius: 5pt
 
-.userBtn
+.right
     float: right
-
-.orders
-    float: right
-
-#root
-    height: 100vh
 
 #ctxmenu 
+    display: block
+    overflow: hidden
     border: 1pt outset $dark
     position: absolute
     background: $white
-    border-radius: 2pt
+    border-radius: 5pt
     z-index: 500
-    margin: 0
-
-#ctxmenu > ul
-    cursor: pointer
-    list-style: none
     padding: 0
     margin: 0
 
-#ctxmenu > ul > li
-    border-bottom: 1pt outset $dark
-    padding: 0pt 3pt
+#ctxmenu > button:active
+    background-color: $light
 
-#ctxmenu > ul > li:hover
+#ctxmenu > button:hover
     font-weight: bold
-    background: $primary
-    color: $white
+    color: $teal
 
-#ctxmenu > ul > li:last-child
+#ctxmenu > button:hover:last-child
+    color: $danger
+
+#ctxmenu > button
+    border-bottom: 1pt outset $dark
+
+#ctxmenu > button:last-child
     border: none
 
 .basic_header
@@ -71,3 +70,15 @@ input::-webkit-inner-spin-button
 /* Firefox */
 input[type=number] 
   -moz-appearance: textfield
+
+#user-menu
+    border-radius: 5pt
+    display: block
+    padding: 0
+    margin: 0
+
+#user-menu > button:active
+    background-color: $light
+
+.dropdown > button:focus
+    box-shadow: none
