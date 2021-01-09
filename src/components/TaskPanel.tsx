@@ -42,7 +42,8 @@ function TaskEntry(props) {
                 <input className="form-control" type="text" name="title" value={props.title} onChange={editField} />
             </td>
             <td className="form-row">
-                <input className="form-control col-5" type="number" name="interval" value={props.interval} onChange={editField} />
+                <input className="form-control col-5" type="number" name="interval" 
+                    value={String(props.interval)} onChange={editField} />
                 <select className="form-control col-7" name="units" onChange={editField} value={props.units}>
                     <option value={3600000}>Hours</option>
                     <option value={86400000}>Days</option>
@@ -52,7 +53,7 @@ function TaskEntry(props) {
                 <button type="button" className="btn btn-outline-success"
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(true)}}
                     onClick={() => dispatch(Panels.Slice.actions.editEntry({
-                        last: Date.now(), ...base}))} hidden={bDelete}>Refresh</button>
+                        last: Date.now() - 1, ...base}))} hidden={bDelete}>Refresh</button>
                 <button type="button" className="btn btn-danger"
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(false)}}
                     onClick={() => dispatch(Panels.Slice.actions.delEntry({

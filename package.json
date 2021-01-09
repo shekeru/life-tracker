@@ -1,6 +1,6 @@
 {
   "name": "life-tracker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "src/Main.js",
   "description": "A tracker to help with negative symptoms.",
   "repository": "git@github.com:shekeru/life-tracker.git",
