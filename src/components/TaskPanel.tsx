@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { TimeAgo } from "utils/Elapsed"
+import { TimeAgo, TimeOut } from "utils/Elapsed"
 import * as Panels from 'store/Panels'
 
 export function TaskPanel(props) {
@@ -52,7 +52,7 @@ function TaskEntry(props) {
                 <button type="button" className="btn btn-outline-success"
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(true)}}
                     onClick={() => dispatch(Panels.Slice.actions.editEntry({
-                        last: Date.now() - 1, ...base}))} hidden={bDelete}>Refresh</button>
+                        last: Date.now(), ...base}))} hidden={bDelete}>Refresh</button>
                 <button type="button" className="btn btn-danger"
                     onContextMenu={(ev) => {ev.preventDefault(); setDelete(false)}}
                     onClick={() => dispatch(Panels.Slice.actions.delEntry({
@@ -75,13 +75,14 @@ function TaskEntry(props) {
 }
 
 function TimeEntry(props) {
-    const [time, setTime] = useState(Date.now()), delta = time - props.last
+    const [time, setTime] = useState(Date.now()), delta = Math.max(0, time - props.last)
     useEffect(() => {
-        let timeout = setTimeout(() => setTime(Date.now()), (delta <= 60) ? 150 : 1000)
+        let timeout = setTimeout(() => setTime(Date.now()), TimeOut(delta))
         return () => {clearTimeout(timeout)}
     }, [time])
     return <>{(props.last) ? 
-        <span className={BetterClass(delta, props.range)}>{TimeAgo(delta) + " ago"}</span> :
+        <span className={BetterClass(delta, props.range)}
+            title={new Date(props.last).toLocaleString()}>{TimeAgo(delta) + " ago"}</span> :
         <span className="font-weight-bold">Never</span>
     }</>
 }
