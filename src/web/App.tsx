@@ -1,11 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { FirebaseContext } from '../store/Context';
-import { ContextMenu } from '../components/CtxMenu'
+import { FirebaseContext } from 'store/Context';
+import { ContextMenu } from 'components/CtxMenu'
 
-import { IndexPage } from '../pages/Index'
-import { LoginPage } from '../pages/Login'
-import * as User from '../store/User'
+import { IndexPage } from 'pages/Index'
+import { LoginPage } from 'pages/Login'
+import * as User from 'store/User'
 
 export function App() {
     let user = User.Select()
@@ -19,6 +19,6 @@ export function App() {
             {firebase => firebase.auth.currentUser ?
                 (<IndexPage user={user} />) : (<LoginPage />)}
         </FirebaseContext.Consumer>
-        <ContextMenu /><span id="version">Jan 08, 2021</span>
+        <ContextMenu /><span id="version">Apr 08, 2021</span>
     </>);
 };

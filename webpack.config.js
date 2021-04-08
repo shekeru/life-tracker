@@ -61,7 +61,8 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        modules: ["node_modules", path.join(__dirname, './src')]
     },
     output: {
         filename: 'compiled.js',

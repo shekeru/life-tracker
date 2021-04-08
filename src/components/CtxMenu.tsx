@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect, useDispatch } from 'react-redux';
-import * as CtxMenu from '../store/CtxMenu'
+import * as CtxMenu from 'store/CtxMenu'
 
 export function ContextMenu() {
     let info = CtxMenu.Select()

@@ -1,8 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import * as Panels from '../store/Panels'
-import TimeAgo from 'react-timeago'
-import { isNumber } from "lodash"
+import { TimeAgo } from "utils/Elapsed"
+import * as Panels from 'store/Panels'
 
 export function TaskPanel(props) {
     return (
@@ -82,7 +81,7 @@ function TimeEntry(props) {
         return () => {clearTimeout(timeout)}
     }, [time])
     return <>{(props.last) ? 
-        <TimeAgo date={props.last} className={BetterClass(delta, props.range)} /> : 
+        <span className={BetterClass(delta, props.range)}>{TimeAgo(delta) + " ago"}</span> :
         <span className="font-weight-bold">Never</span>
     }</>
 }

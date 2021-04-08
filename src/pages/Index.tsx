@@ -21,6 +21,7 @@ export function IndexPage(props) {
         <div className="btn-group">
             {panels.map((val, idx) => (
                 <button type="button" className={"btn btn-outline-info" + (active == val.ikey ? " active" : "")}
+                    style={editing == val.ikey ? {padding: 0} : {}}
                     onClick={() => {if (editing != val.ikey) dispatch(Active.Slice.actions.update(val.ikey))}} key={val.ikey}
                     onContextMenu={(ev) => { 
                         dispatch(CtxMenu.Slice.actions.enable({
@@ -33,8 +34,8 @@ export function IndexPage(props) {
                             ]
                         }))
                     }}>{editing == val.ikey ? 
-                        <input type="text" autoFocus onBlur={() => updateEdit("")}
-                            onKeyPress={(ev) => { if (ev.key == 'Enter') updateEdit("") }} value={val.title} 
+                        <input type="text" autoFocus size={Math.max(1, val.title.length)} onBlur={() => updateEdit("")}
+                            onKeyPress={(ev) => { if (ev.key == 'Enter') updateEdit("") }} value={val.title}
                             onChange={(ev) => dispatch(Panels.Slice.actions.rename({idx: idx, title: ev.target.value}))} /> 
                     : val.title}</button>))}
         </div>

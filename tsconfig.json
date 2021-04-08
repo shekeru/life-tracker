@@ -2,8 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "target": "es2015",
-    "baseUrl": "src",
-    "rootDir": "src",
+    "baseUrl": "./src",
     "outDir": "build",
     "module": "commonjs",
     "moduleResolution": "node",
