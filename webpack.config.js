@@ -7,9 +7,9 @@ module.exports = {
     entry: './src/Main.tsx',
     devtool: 'inline-source-map',
     devServer: {
-        inline: true,
+        liveReload: true,
         historyApiFallback: true,
-        contentBase: path.join(__dirname, 'dist'),
+        static: path.join(__dirname, 'dist'),
         compress: true,
         port: 1337
     },
