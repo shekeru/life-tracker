@@ -89,7 +89,7 @@ function TimeEntry(props) {
 
 function BetterNumber(value) {
     const parsed = Number(value) 
-    return NaN !== parsed ? parsed : value
+    return Number.isNaN(parsed) ? parsed : value
 }
 
 function BetterClass(delta, range) {
